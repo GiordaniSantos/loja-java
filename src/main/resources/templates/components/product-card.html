@@ -1,0 +1,12 @@
+<div th:fragment="card(product)" class="product-card relative">
+  <img class="card-image" th:src="${product.imageUrl}" alt="Imagem do produto" />
+
+  <div class="flex-column-left">
+    <h3 th:text="${product.description}"></h3>
+    <p>Quantidade: <span th:text="${product.quantity}"></span></p>
+    <p>Preço: R$ <span th:text="${product.price}"></span></p>
+
+    <button class="remove-button" th:onclick="'removeProduct(' + ${product.id} + ')'">X</button>
+    <button class="favorite-button" th:onclick="'favoriteProduct(' + ${product.id} + ')'">❤︎</button>
+  </div>
+</div>

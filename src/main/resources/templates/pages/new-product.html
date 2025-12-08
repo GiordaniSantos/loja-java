@@ -1,0 +1,5 @@
+<form th:action="@{/salvar}" method="post" th:object="${produto}">
+  <input type="text" th:field="*{nome}" placeholder="Nome" />
+  <input type="number" th:field="*{preco}" placeholder="Preço" />
+  <button type="submit">Salvar</button>
+</form>

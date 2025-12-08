@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: lojaInformatica
+  datasource:
+    url: jdbc:mysql://localhost:3306/loja-informatica
+    username: root
+    password: murilo123
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: false
