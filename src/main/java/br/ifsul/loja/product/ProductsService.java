@@ -1,5 +1,8 @@
 package br.ifsul.loja.product;
 
+import br.ifsul.loja.externalproduct.DummyJsonClient;
+import br.ifsul.loja.externalproduct.ExternalProductDTO;
+import br.ifsul.loja.externalproduct.ExternalProductsResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +14,9 @@ public class ProductsService {
     @Autowired
     private ProductsRepository repository;
 
+    @Autowired
+    private DummyJsonClient dummyJsonClient;
+
     public List<Product> listProducts(){
         return repository.findAll();
     }
@@ -20,7 +26,8 @@ public class ProductsService {
     }
 
     public List<Product> listExternalProducts(){
-        return repository.findAll();
+        ExternalProductsResponse externalProductsList = dummyJsonClient.getProducts();
+        return externalProductsList.getProducts().stream().map(ProductMapper::externalProductToProduct).toList();
     }
 
     public boolean favoriteProduct(Long id){
