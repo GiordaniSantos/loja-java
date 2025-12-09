@@ -1,10 +1,12 @@
 package br.ifsul.loja.product;
 
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,20 +25,11 @@ public class ProductsController {
     @GetMapping("/products")
     public String listProducts(Model model) {
         List<Product> products = service.listProducts();
+        model.addAttribute("title", "Todos os produtos");
         model.addAttribute("products", products);
+        model.addAttribute("endpointUpdate", "/products");
+        model.addAttribute("removeButton", true);
         return "pages/list-products";
-    }
-
-    @GetMapping("products/favorites")
-    public String listFavorites(Model model) {
-        List<Product> products = service.listFavoritesProducts();
-        model.addAttribute("products", products);
-        return "pages/favorites";
-    }
-
-    @GetMapping("products/new")
-    public String newProduct(Model model) {
-        return "pages/new-product";
     }
 
     @DeleteMapping("/products/{id}")
@@ -44,16 +37,52 @@ public class ProductsController {
         return ResponseEntity.ok().body(service.deleteProduct(id));
     }
 
+    @GetMapping("products/favorites")
+    public String listFavorites(Model model) {
+        List<Product> products = service.listFavoritesProducts();
+        model.addAttribute("title", "Produtos favoritos");
+        model.addAttribute("products", products);
+        model.addAttribute("endpointUpdate", "products/favorites");
+        model.addAttribute("removeButton", false);
+        return "pages/list-products";
+    }
+
+    @GetMapping("products/external")
+    public String listExternalProducts(Model model) {
+        List<Product> products = service.listExternalProducts();
+        model.addAttribute("title", "Produtos externos");
+        model.addAttribute("products", products);
+        model.addAttribute("endpointUpdate", "products/external");
+        model.addAttribute("removeButton", false);
+        return "pages/list-products";
+    }
+
     @PostMapping("/products/{id}/favorite")
     public ResponseEntity<Boolean> favoriteProduct(@PathVariable Long id) {
         return ResponseEntity.ok().body(service.favoriteProduct(id));
     }
 
-    /*
-        @PostMapping("/products")
-        public String saveProduct(@ModelAttribute Product product, Model model) {
-            model.addAttribute("mensagem", "Produto cadastrado: " + produto.getNome());
-            return "pages/favorites";
+    @GetMapping("products/new")
+    public String newProduct(Model model) {
+        model.addAttribute("product", new ProductDTO());
+        return "pages/new-product";
+    }
+
+    @PostMapping("/products")
+    public String saveProduct(
+            @Valid @ModelAttribute("product") ProductDTO productDto,
+            BindingResult result,
+            Model model
+    ) {
+        if (result.hasErrors()) {
+            model.addAttribute("errorMessage", "Existem erros no formulário. Corrija-os e tente novamente.");
+            return "pages/new-product";
         }
-*/
+        Product productSaved = service.createProduct(productDto);
+        model.addAttribute("message", "Produto cadastrado: " + productSaved.getDescription());
+        model.addAttribute("product", productSaved);
+        return "pages/result";
+    }
+
+
 }

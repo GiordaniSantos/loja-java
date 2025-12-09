@@ -1,5 +1,29 @@
-<form th:action="@{/salvar}" method="post" th:object="${produto}">
-  <input type="text" th:field="*{nome}" placeholder="Nome" />
-  <input type="number" th:field="*{preco}" placeholder="Preço" />
-  <button type="submit">Salvar</button>
+<form hx-post="/products" hx-target="#content" hx-swap="innerHTML" th:object="${product}" class="form-container">
+  <h2>Cadastro de produto</h2>
+
+  <div class="form-group">
+    <label for="description">Descrição</label>
+    <input id="description" type="text" th:field="*{description}" placeholder="Digite a descrição" />
+    <span class="error" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+  </div>
+
+  <div class="form-group">
+    <label for="price">Preço</label>
+    <input id="price" type="number" step="0.01" th:field="*{price}" placeholder="Digite o preço" />
+    <span class="error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+  </div>
+
+  <div class="form-group">
+    <label for="quantity">Quantidade</label>
+    <input id="quantity" type="number" th:field="*{quantity}" placeholder="Digite a quantidade" />
+    <span class="error" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></span>
+  </div>
+
+  <div class="form-group">
+    <label for="imageUrl">URL da Imagem</label>
+    <input id="imageUrl" type="text" th:field="*{imageUrl}" placeholder="Cole a URL da imagem" />
+    <span class="error" th:if="${#fields.hasErrors('imageUrl')}" th:errors="*{imageUrl}"></span>
+  </div>
+
+  <button type="submit" class="btn-submit">Salvar</button>
 </form>

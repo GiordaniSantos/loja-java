@@ -1,9 +1,9 @@
 <div id="product-list">
-  <h1>Título</h1>
+  <h1 th:text="${title}"></h1>
 
   <div class="flex-between">
     <div th:each="p : ${products}">
-      <div th:replace="components/product-card :: card(${p})"></div>
+      <div th:replace="components/product-card :: card(${p}, ${removeButton}, ${endpointUpdate})"></div>
     </div>
   </div>
 </div>

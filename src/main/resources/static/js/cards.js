@@ -1,4 +1,6 @@
-async function removeProduct(id) {
+async function removeProduct(button) {
+  const id = button.dataset.id;
+  const endpoint = button.dataset.endpoint;
   try {
     const response = await fetch(`/products/${id}`, {
       method: "DELETE",
@@ -9,13 +11,15 @@ async function removeProduct(id) {
       return;
     }
 
-    updateProductsUI();
+    updateProductsUI(endpoint || "/products");
   } catch (error) {
     console.error("Erro ao remover produto:", error);
   }
 }
 
-async function favoriteProduct(id) {
+async function favoriteProduct(button) {
+  const id = button.dataset.id;
+  const endpoint = button.dataset.endpoint;
   try {
     const response = await fetch(`/products/${id}/favorite`, {
       method: "POST",
@@ -27,7 +31,7 @@ async function favoriteProduct(id) {
       return;
     }
 
-    updateProductsUI();
+    updateProductsUI(endpoint || "/products");
   } catch (error) {
     console.error("Erro ao favoritar produto:", error);
   }

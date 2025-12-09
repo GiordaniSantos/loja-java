@@ -22,6 +22,6 @@ public class Product {
     private Double price;
     private int quantity;
 
-    @Column(length = 3000)
+    @Column(length = 30000)
     private String imageUrl;
 }

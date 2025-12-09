@@ -19,9 +19,22 @@ public class ProductsService {
         return repository.findAll();
     }
 
+    public List<Product> listExternalProducts(){
+        return repository.findAll();
+    }
+
     public boolean favoriteProduct(Long id){
         //repository.favoriteProduct(id);
         return true;
+    }
+
+    public Product createProduct(ProductDTO productDTO){
+        Product newProduct = new Product();
+        newProduct.setDescription(productDTO.getDescription());
+        newProduct.setPrice(productDTO.getPrice());
+        newProduct.setQuantity(productDTO.getQuantity());
+        newProduct.setImageUrl(productDTO.getImageUrl());
+        return repository.save(newProduct);
     }
 
     public boolean deleteProduct(Long id){

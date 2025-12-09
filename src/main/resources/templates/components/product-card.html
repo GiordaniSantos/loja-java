@@ -1,12 +1,25 @@
-<div th:fragment="card(product)" class="product-card relative">
+<div th:fragment="card(product, removeButton, endpointUpdate)" class="product-card relative">
   <img class="card-image" th:src="${product.imageUrl}" alt="Imagem do produto" />
 
-  <div class="flex-column-left">
+  <div class="flex-column-left card-infos">
     <h3 th:text="${product.description}"></h3>
     <p>Quantidade: <span th:text="${product.quantity}"></span></p>
     <p>Preço: R$ <span th:text="${product.price}"></span></p>
 
-    <button class="remove-button" th:onclick="'removeProduct(' + ${product.id} + ')'">X</button>
-    <button class="favorite-button" th:onclick="'favoriteProduct(' + ${product.id} + ')'">❤︎</button>
+    <button
+      class="remove-button"
+      th:if="${removeButton}"
+      th:attr="data-id=${product.id}, data-endpoint=${endpointUpdate}"
+      onclick="removeProduct(this)"
+    >
+      X
+    </button>
+    <button
+      class="favorite-button"
+      th:attr="data-id=${product.id}, data-endpoint=${endpointUpdate}"
+      onclick="favoriteProduct(this)"
+    >
+      ❤︎
+    </button>
   </div>
 </div>
